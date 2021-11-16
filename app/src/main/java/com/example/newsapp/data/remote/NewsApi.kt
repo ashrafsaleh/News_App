@@ -12,7 +12,7 @@ interface NewsApi {
         @Query("country") country: String,
         @Query("category") category: String,
         @Query("apiKey") apiKey: String
-    ): Observable<NewResponse>
+    ): Single<NewResponse>
 
 
 
@@ -22,7 +22,7 @@ interface NewsApi {
         @Query("q")q:String,
         @Query("sortBy")sortBy:String
 
-    ): Observable<NewResponse>
+    ): Single<NewResponse>
 
 
 }

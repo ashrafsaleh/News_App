@@ -6,11 +6,13 @@ import com.example.newsapp.data.local.room.ArticlesDao
 import com.example.newsapp.data.remote.RetroInstance
 import com.example.newsapp.model.Article
 import com.example.newsapp.model.Constants.Companion.API_KEY
+import com.example.newsapp.model.NewResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class BreakingNewsRepository (val db: ArticlesDao) {
+class BreakingNewsRepository(val db: ArticlesDao) {
     val articlesList = MutableLiveData<List<Article>>()
     var disposable: Disposable? = null
 
@@ -18,9 +20,16 @@ class BreakingNewsRepository (val db: ArticlesDao) {
         disposable = RetroInstance.api.getBreakingNews("us", "business", API_KEY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                articlesList.value = it.articles
-            }
+            .subscribeWith(object : DisposableSingleObserver<NewResponse>() {
+                override fun onSuccess(t: NewResponse) {
+                    articlesList.value = t.articles
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+            })
 
         return articlesList
     }
@@ -29,16 +38,24 @@ class BreakingNewsRepository (val db: ArticlesDao) {
         disposable = RetroInstance.api.searchNews(API_KEY, query, "popularity")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                articlesList.value = it.articles
-            }
+            .subscribeWith(object : DisposableSingleObserver<NewResponse>() {
+                override fun onSuccess(t: NewResponse) {
+                    articlesList.value = t.articles
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+            })
         return articlesList
     }
-    fun getOfflineArticles():LiveData<List<Article>>{
+
+    fun getOfflineArticles(): LiveData<List<Article>> {
         return db.articlesList()
     }
 
-     fun insertArticle(article: Article) {
+    fun insertArticle(article: Article) {
         db.insertArticle(article)
     }
 }
