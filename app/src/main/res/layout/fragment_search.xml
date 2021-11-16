@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.SearchFragment">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/searchToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FF018786"
+            app:title="Search News"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:id="@+id/searchlayout"
+        android:weightSum="1"
+        android:layout_below="@id/searchToolBar">
+        <EditText
+            android:id="@+id/searchnewsedittext"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="0.8"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:hint="Search"
+            android:background="#FF018786"
+            android:textColor="@color/white"
+            android:textColorHint="#63F0F0F0" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="0.2"
+            android:id="@+id/searcharticleimagebutton"
+            android:src="@drawable/icon_search"
+            android:layout_margin="5dp"
+            android:background="#FF018786"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchlayout"
+        android:layout_margin="10dp"
+        android:id="@+id/searcharticlesrecyclerview"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:spanCount="1"
+        android:orientation="vertical"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Results"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:id="@+id/nodatafound"
+        android:textSize="18sp"
+        />
+
+
+</RelativeLayout>
